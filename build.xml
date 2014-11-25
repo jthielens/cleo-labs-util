@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<!-- Configuration of the Ant build system to generate a Jar file --> 
+<project name="sodiumcow=util" default="CreateJar">
+  <target name="CreateJar" description="Create Jar file">
+    <jar jarfile="dist/sodiumcow-util.jar" basedir="bin/main" includes="com/sodiumcow/util/**/*.class" />
+    <jar jarfile="dist/sodiumcow-repl.jar" basedir="bin/main" includes="com/sodiumcow/repl/**/*.class" />
+    <copy todir="${user.home}/Vagrant/harmony" flatten="true">
+      <resources>
+        <file file="dist/sodiumcow-util.jar" />
+        <file file="dist/sodiumcow-repl.jar" />
+      </resources>
+    </copy>
+  </target>
+</project>
