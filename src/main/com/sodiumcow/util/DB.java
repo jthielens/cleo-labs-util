@@ -34,7 +34,7 @@ public class DB {
         this.connection = connection;
         this.user       = user;
         this.password   = password;
-        connect();
+        _connect();
     }
 
     public boolean connected() {
@@ -140,30 +140,74 @@ public class DB {
         public String[] query;
         public Object[] args;
 
+        /**
+         * SELECT * from {@code table}
+         * @param table table
+         */
         public Selection(String table) {
             this(table, (String[])null, (String[])null, (Object[]) null);
         }
+        /**
+         * SELECT * from {@code table} WHERE {@code query}={@code args}
+         * @param table table
+         * @param query \\s+ separated query column names
+         * @param args values matching query column names
+         */
         public Selection(String table, String query, Object...args) {
             this(table, S.w(query), args);
         }
+        /**
+         * SELECT * from {@code table} WHERE {@code query}={@code args}
+         * @param table table
+         * @param query array of query column names
+         * @param args values matching query column names
+         */
         public Selection(String table, String[] query, Object...args) {
             this(table, null, query, args);
         }
+        /**
+         * SELECT {@code columns} from {@code table} WHERE {@code query}={@code args}
+         * @param table table
+         * @param columns \\s+ separated result column names
+         * @param query \\s+ separated query column names
+         * @param args values matching query column names
+         */
         public Selection(String table, String columns, String query, Object...args) {
             this(table, S.w(columns), S.w(query), args);
         }
+        /**
+         * SELECT {@code columns} from {@code table} WHERE {@code query}={@code args}
+         * @param table table
+         * @param columns array of result column names
+         * @param query array of query column names
+         * @param args values matching query column names
+         */
         public Selection(String table, String[] columns, String[] query, Object...args) {
             this.table   = table;
             this.columns = columns;
             this.query   = query;
             this.args    = args;
         }
+        /**
+         * SELECT * from {@code id.table} where {@code id.column}={@code id.id}
+         * @param id an {@link ID}
+         */
         public Selection(ID id) {
             this(id.table, (String[])null, new String[] {id.column}, id.id);
         }
+        /**
+         * SELECT {@code columns} from {@code id.table} where {@code id.column}={@code id.id}
+         * @param columns \\s+ separated result column names
+         * @param id an {@link ID}
+         */
         public Selection(ID id, String columns) {
             this(id.table, S.w(columns));
         }
+        /**
+         * SELECT {@code columns} from {@code id.table} where {@code id.column}={@code id.id}
+         * @param columns array of result column names
+         * @param id an {@link ID}
+         */
         public Selection(ID id, String[] columns) {
             this(id.table, columns, new String[] {id.column}, id.id);
         }
