@@ -192,6 +192,7 @@ public class F {
     }
 
     public static String hex(byte[] bytes) {
+        if (bytes==null) return null;
         StringBuffer s = new StringBuffer();
         for (byte b : bytes) {
             s.append(String.format("%02x", b));
@@ -215,7 +216,7 @@ public class F {
                                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // E0-EF
                                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};// F0-FF
     public static byte[] hex(String s) {
-        if (s.length() % 2 != 0 || s.contains("[^0-9a-fA-F]")) {
+        if (s==null || s.length() % 2 != 0 || s.contains("[^0-9a-fA-F]")) {
             return null;
         } else {
             byte[] source = s.getBytes();

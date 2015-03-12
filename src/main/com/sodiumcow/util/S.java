@@ -15,6 +15,16 @@ import java.util.regex.Pattern;
 public class S {
 
     /**
+     * NPE protects new String(byte[]), returning
+     * null if the byte array is null.
+     * @param bytes a (possibly null) byte array
+     * @return a (possibly null) String
+     */
+    public static String s(byte[] bytes) {
+        if (bytes==null) return null;
+        return new String(bytes);
+    }
+    /**
      * NPE protects a string, returning "" for nulls.
      * @param string a (possibly null) String
      * @return a (definitely not null but possibly empty) String
@@ -58,12 +68,35 @@ public class S {
     }
 
     /**
+     * Returns a concatenated list of strings, but "" if any are empty.
+     * @param strings a list of strings
+     * @return concatenated list or ""
+     */
+    public static String all(String...strings) {
+        StringBuilder s = new StringBuilder();
+        for (String string : strings) {
+            if (S.empty(string)) return "";
+            s.append(string);
+        }
+        return s.toString();
+    }
+
+    /**
      * Shorthand for new String[] {...}.
      * @param strings
      * @return strings
      */
     public static String[] a(String...strings) {
         return strings;
+    }
+
+    /**
+     * Shorthand for strings.toArray(new String[strings.size()]).
+     * @param strings (possibly null)
+     * @return an array of strings (possibly null)
+     */
+    public static String[] a(Collection<String> strings) {
+        return strings==null ? null : strings.toArray(new String[strings.size()]);
     }
 
     /**
@@ -205,7 +238,7 @@ public class S {
      * @return          the concatenated strings
      */
     public static String join(String separator, Collection<String> a) {
-        return join(separator, 0, a.toArray(new String[a.size()]));
+        return join(separator, 0, S.a(a));
     }
 
     /**
