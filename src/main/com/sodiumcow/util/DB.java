@@ -90,14 +90,18 @@ public class DB {
         connect();
         DatabaseMetaData md = conn.getMetaData();
         ResultSet rs = md.getColumns(null, null, "%", "%");
-        while (rs.next()) {
-            String tab  = rs.getString(3);
-            String col  = rs.getString(4);
-            int    type = rs.getInt(5);
-            if (result.get(tab)==null) {
-                result.put(tab, new LinkedHashMap<String,Integer>());
+        try {
+            while (rs.next()) {
+                String tab  = rs.getString(3);
+                String col  = rs.getString(4);
+                int    type = rs.getInt(5);
+                if (result.get(tab)==null) {
+                    result.put(tab, new LinkedHashMap<String,Integer>());
+                }
+                result.get(tab).put(col,type);
             }
-            result.get(tab).put(col,type);
+        } finally {
+            rs.close();
         }
         return result;
     }
