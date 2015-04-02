@@ -581,8 +581,8 @@ public class REPL {
                 if (confused) {
                     error("type \"help\" for help");
                 }
-                if (!commanded) {
-                    // didn't see any commands -- run repl
+                if (!commanded || argv.length>0 && argv[argv.length-1].equals(";")) {
+                    // didn't see any commands (or terminal ;) -- run repl
                     run();
                 }
             } catch (Exception e) {
