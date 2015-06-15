@@ -2,11 +2,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.cleo.labs</groupId>
-    <artifactId>util</artifactId>
+    <artifactId>cleo-labs-util</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>util</name>
+    <name>cleo-labs-util</name>
     <url>http://maven.apache.org</url>
 
     <distributionManagement>
