@@ -1,4 +1,4 @@
-package com.sodiumcow.repl.annotation;
+package com.cleo.labs.util.repl.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

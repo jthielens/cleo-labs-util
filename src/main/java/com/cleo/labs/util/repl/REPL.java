@@ -1,4 +1,4 @@
-package com.sodiumcow.repl;
+package com.cleo.labs.util.repl;
 
 import static java.lang.Character.isWhitespace;
 
@@ -15,8 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 
-import com.sodiumcow.repl.annotation.Command;
-import com.sodiumcow.repl.annotation.Option;
+import com.cleo.labs.util.repl.annotation.Command;
+import com.cleo.labs.util.repl.annotation.Option;
 
 public class REPL {
 

@@ -1,4 +1,4 @@
-package com.sodiumcow.util;
+package com.cleo.labs.util;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

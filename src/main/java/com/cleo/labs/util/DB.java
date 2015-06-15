@@ -1,4 +1,4 @@
-package com.sodiumcow.util;
+package com.cleo.labs.util;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;

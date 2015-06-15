@@ -1,4 +1,4 @@
-package com.sodiumcow.util;
+package com.cleo.labs.util;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -83,6 +83,7 @@ public class LDAP {
         TYPE    ("Type",               Type.APACHE.tag,       true),
         DEFAULT ("Defaultldapug",      "False",               true),
         CHECKPW ("Pwdcheckingenabled", "False",               true),
+        LOOKUP  ("Lookupenabled",      "False",               true),
         WARNUSER("Emailusers",         "False",               true),
         ENABLED (".enabled",           "True",                true),
         HOST    ("Address",            "",                    true),
