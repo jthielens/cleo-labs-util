@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.util.Arrays;
@@ -109,7 +110,10 @@ public class F {
         BufferedInputStream in = null;
         ByteArrayOutputStream out = null;
         try {
-            in = new BufferedInputStream(new URL(src).openStream());
+            URLConnection u = new URL(src).openConnection();
+            u.setRequestProperty("User-Agent", "curl/7.37.1");
+            u.setUseCaches(false);
+            in = new BufferedInputStream(u.getInputStream());
             out = new ByteArrayOutputStream();
             byte[] buf = new byte[65536];
             int n;
