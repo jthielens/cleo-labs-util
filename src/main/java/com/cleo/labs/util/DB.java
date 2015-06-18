@@ -66,6 +66,10 @@ public class DB {
     	this.conn = conn;
     }
 
+    public Connection getConnection() {
+    	return this.conn;
+    }
+
     public void disconnect() {
         if (conn!=null) {
             try {
