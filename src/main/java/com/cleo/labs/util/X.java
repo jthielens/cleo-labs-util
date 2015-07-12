@@ -284,7 +284,6 @@ public class X {
         return setmap(map, path, (Object)value);
     }
 
-    @SuppressWarnings("unchecked")
     public static String map2tree(Map<String,Object> map) {
         StringBuilder s = new StringBuilder();
         StringBuilder prefix = new StringBuilder();
@@ -295,10 +294,17 @@ public class X {
             if (e.getValue() instanceof String) {
                 s.append(prefix).append(e.getKey()).append('=').append((String)e.getValue()).append('\n');
             } else {
-                s.append(prefix).append(e.getKey()).append(':').append('\n');
-                prefix.append(". ");
-                q.push(i);
-                i = ((Map<String,Object>)e.getValue()).entrySet().iterator();
+                @SuppressWarnings("unchecked")
+                Map<String,Object> value = (Map<String,Object>)e.getValue();
+                try {
+                    String ldap = new LDAP(value).toString();
+                    s.append(prefix).append(e.getKey()).append('=').append(ldap).append('\n');
+                } catch (Exception notldap) {
+                    s.append(prefix).append(e.getKey()).append(':').append('\n');
+                    prefix.append(". ");
+                    q.push(i);
+                    i = value.entrySet().iterator();
+                }
             }
             while (!i.hasNext() && !q.isEmpty()) {
                 i = q.pop();
