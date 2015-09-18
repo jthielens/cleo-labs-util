@@ -118,11 +118,19 @@ public class DB {
         return loadDictionary(dictionary, "Description");
     }
     public Map<String,Integer> loadDictionary(String dictionary, String column) throws SQLException {
+        return loadDictionary(dictionary, column, null);
+    }
+    public Map<String,Integer> loadDictionary(String dictionary, String column, String where) throws SQLException {
         Statement stmt = null;
         try {
             connect();
             stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select "+dictionary+","+column+" from "+dictionary);
+            if (where==null) {
+                where="";
+            } else {
+                where = " where "+where;
+            }
+            ResultSet rs = stmt.executeQuery("select "+dictionary+","+column+" from "+dictionary+where);
             HashMap<String,Integer> result = new HashMap<String,Integer>();
             while (rs.next()) {
                 int    id          = rs.getInt(1);
