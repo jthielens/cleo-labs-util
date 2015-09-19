@@ -94,7 +94,7 @@ public class X {
                 String text = child.getNodeValue().trim();
                 if (!text.isEmpty()) {
                     String name = p.getNodeName();
-                    if (name.equalsIgnoreCase("Advanced")) {
+                    if (name.equalsIgnoreCase("Advanced") || name.equalsIgnoreCase("Other")) {
                         String[] kv = text.split("=", 2);
                         name = name+"."+kv[0];
                         text = kv.length>1 ? kv[1] : "";
