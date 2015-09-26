@@ -119,6 +119,16 @@ public class S {
     }
 
     /**
+     * Maps empty or already {@code null} Strings to
+     * {@code null}, leaving non-empty Strings intact.
+     * @param s a String or {@code null}
+     * @return a non-empty String or {@code null}
+     */
+    public static String ornull(String s) {
+        return (s==null || s.isEmpty()) ? null : s;
+    }
+
+    /**
      * Null safe comparison of two strings.
      * @param a a (possibly null) String
      * @param b a (possibly null) String
@@ -197,6 +207,7 @@ public class S {
      * @return          the concatenated strings
      */
     public static String join(String separator, int from, int to, String...a) {
+        if (a==null    ) return "";
         if (from<0     ) from=0;
         if (to>a.length) to=a.length;
         if (from>=to   ) return "";
@@ -218,6 +229,7 @@ public class S {
      * @return          the concatenated strings
      */
     public static String join(String separator, int from, String...a) {
+        if (a==null) return "";
         return join(separator, from, a.length, a);
     }
 
@@ -301,6 +313,7 @@ public class S {
     }
 
     public static String join(String separator, Map<?,?> map, Formatter formatter) {
+        if (map==null) return "";
         StringBuilder s = new StringBuilder();
         for (Map.Entry<?, ?> e : map.entrySet()) {
             if (s.length()>0) s.append(separator);
