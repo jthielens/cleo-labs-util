@@ -96,6 +96,7 @@
                         <configuration>
                             <releaseName>${github.release}</releaseName>
                             <tag>${github.tag}</tag>
+                            <overwriteArtifact>true</overwriteArtifact>
                         </configuration>
                     </execution>
                 </executions>
