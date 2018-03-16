@@ -70,6 +70,7 @@ public class LDAP {
 
     public enum Attr {
         // these are for mapping LDAP attributes
+        UID     ("Useruidattribute"),
         USER    ("Attribute"),
         MAIL    ("Emailaddressattribute"),
         HOME    ("Homedirattribute"),
@@ -86,7 +87,7 @@ public class LDAP {
         // these are indirect ones
         MODE     ("Security",            SecurityMode.NONE.tag, true),
         TYPE     ("Type",                Type.APACHE.tag,       true),
-        DEFAULT  ("Defaultldapug",       "",                    true),
+        DEFAULT  ("Defaultldapug",       "False",               true),
         CHECKPW  ("Pwdcheckingenabled",  "False",               true),
         LOOKUP   ("Lookupenabled",       "False",               true),
         WARNUSER ("Emailusers",          "False",               true),
