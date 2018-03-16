@@ -97,12 +97,13 @@ public class REPL {
         Arrays.fill(pad,  ' ');
         String spad = new String(pad);
         char   c    = '[';
-        if (!no_prefix) {
-            ss[ss.length-1] = ss[ss.length-1]+"]";
-        }
 
-        for (String s : ss) {
+        for (int i=0; i<ss.length; i++) {
+            String s = ss[i];
             if (s==null) s="null";
+            if (i==ss.length-1 && !no_prefix) {
+                s += "]";
+            }
             String[] lines = s.split("\n");
             for (String line : lines) {
                 if (no_prefix) {
