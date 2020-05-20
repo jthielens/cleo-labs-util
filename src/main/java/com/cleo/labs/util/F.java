@@ -104,15 +104,21 @@ public class F {
         }
         Clobbered result = clobber(dst, mode, "MD5", hashOrNull(src, "MD5"));
         if (!result.matched) {
+            FileInputStream fis = null;
+            FileOutputStream fos = null;
             FileChannel schannel = null;
             FileChannel dchannel = null;
     
             try {
-                schannel = new FileInputStream(src).getChannel();
-                dchannel = new FileOutputStream(dst).getChannel();
+                fis = new FileInputStream(src);
+                schannel = fis.getChannel();
+                fos = new FileOutputStream(dst);
+                dchannel = fos.getChannel();
                 dchannel.transferFrom(schannel, 0, schannel.size());
             } finally {
+                if (fis != null) fis.close();
                 if (schannel != null) schannel.close();
+                if (fos != null) fos.close();
                 if (dchannel != null) dchannel.close();
             }
         }
@@ -332,7 +338,7 @@ public class F {
      */
     public static String hex(byte[] bytes) {
         if (bytes==null) return null;
-        StringBuffer s = new StringBuffer();
+        StringBuilder s = new StringBuilder(2 * bytes.length);
         for (byte b : bytes) {
             s.append(String.format("%02x", b));
         }
