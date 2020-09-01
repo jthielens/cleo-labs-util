@@ -4,8 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
-
-import javax.xml.bind.DatatypeConverter;
+import java.util.Base64;
 
 public class SSHA {
 
@@ -37,7 +36,7 @@ public class SSHA {
     }
 
     public static String hash(String password) {
-        return TAG+DatatypeConverter.printBase64Binary(hashbytes(password));
+        return TAG+Base64.getEncoder().encode(hashbytes(password));
     }
 
     public static boolean verify(String password, String encoded) {
@@ -46,7 +45,7 @@ public class SSHA {
         }
         byte[] encbytes;
         try {
-            encbytes = DatatypeConverter.parseBase64Binary(encoded.substring(TAG.length()));
+            encbytes = Base64.getDecoder().decode(encoded.substring(TAG.length()));
         } catch (IllegalArgumentException e) {
             return false; // doesn't look base64 encoded
         }

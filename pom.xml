@@ -52,13 +52,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>jdk.tools</groupId>
-            <artifactId>jdk.tools</artifactId>
-            <scope>system</scope>
-            <version>1.8</version>
-            <systemPath>${java.home}/../lib/tools.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
@@ -84,7 +77,7 @@
             <plugin>
                 <groupId>de.jutzig</groupId>
                 <artifactId>github-release-plugin</artifactId>
-                <version>1.1.0</version>
+                <version>1.1.1</version>
                 <executions>
                     <execution>
                         <id>github-upload</id>
