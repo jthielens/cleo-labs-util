@@ -15,6 +15,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DB {
     private Connection conn;
@@ -444,14 +446,16 @@ public class DB {
     public int insert(String table, String[] columns, Object...args) throws SQLException {
         return insert(table, Arrays.asList(columns), Arrays.asList(args));
     }
+
+    private static final Pattern PGEXCEPTION = Pattern.compile("(?s).*ERROR: null value in column \"(\\w*)\" of relation \"(\\w*)\" violates not-null constraint.*");
     public int insert(String table, List<String> columns, List<Object> args) throws SQLException {
         PreparedStatement stmt = null;
         try {
             connect();
-            stmt = conn.prepareStatement("insert into "+table+
-                                          "("+S.join(",", columns)+") "+
-                                          "values ("+S.join(",", S.x("?", columns.size()))+")",
-                                         Statement.RETURN_GENERATED_KEYS);
+            String insert = "insert into "+table+
+                    "("+S.join(",", columns)+") "+
+                    "values ("+S.join(",", S.x("?", columns.size()))+")";
+            stmt = conn.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
             setObjects(stmt, args);
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
@@ -460,6 +464,28 @@ public class DB {
                 result = (int)rs.getLong(1);
             }
             return result;
+        } catch (SQLException e) {
+            Matcher m = PGEXCEPTION.matcher(e.getMessage());
+            if (m.matches()) {
+                String idcolumn = m.group(1);
+                stmt = conn.prepareStatement("select max("+idcolumn+") from "+table);
+                ResultSet rs = stmt.executeQuery();
+                int nextid;
+                if (rs!=null && rs.next()) {
+                    nextid = 1+rs.getInt(1);
+                } else {
+                    throw e; // give up?
+                }
+                String insert = "insert into "+table+
+                                "("+idcolumn+","+S.join(",", columns)+") "+
+                                "values ("+String.valueOf(nextid)+","+S.join(",", S.x("?", columns.size()))+")";
+                stmt = conn.prepareStatement(insert);
+                setObjects(stmt, args);
+                stmt.executeUpdate();
+                return nextid;
+            } else {
+                throw e;
+            }
         } finally {
             if (stmt!=null) stmt.close();
         }
