@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -20,9 +22,16 @@ import com.cleo.labs.util.repl.annotation.Option;
 
 public class REPL {
 
+    private PrintStream out = System.out;
+
+    public REPL output(OutputStream os) {
+        out = new PrintStream(os);
+        return this;
+    }
+
     public void error(String e) {
         if (e!=null) {
-            System.out.println(e);
+            out.println(e);
         }
     }
     
@@ -37,19 +46,19 @@ public class REPL {
             if (m!=null) {
                 s = s+": "+m;
             }
-            System.out.println(s);
+            out.println(s);
         }
     }
 
     public void prompt(String s) {
         if (System.console()!=null && s!=null) {
-            System.out.print(s);
+            out.print(s);
         }
     }
     
     public void print(String s) {
         if (s!=null) {
-            System.out.println(s);
+            out.println(s);
         }
     }
     
