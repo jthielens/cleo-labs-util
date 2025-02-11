@@ -3,6 +3,7 @@ package com.cleo.labs.util.repl;
 import static java.lang.Character.isWhitespace;
 
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,6 +24,8 @@ import com.cleo.labs.util.repl.annotation.Option;
 public class REPL {
 
     private PrintStream out = System.out;
+    private Console console = System.console();
+    private BufferedReader input = null;
 
     public REPL output(OutputStream os) {
         out = new PrintStream(os);
@@ -51,8 +54,8 @@ public class REPL {
     }
 
     public void prompt(String s) {
-        if (System.console()!=null && s!=null) {
-            out.print(s);
+        if (console!=null && s!=null) {
+            console.printf("%s", s);
         }
     }
     
@@ -359,7 +362,7 @@ public class REPL {
         // look for !shell
         if (argv.length>0 && argv[0].startsWith("!")) {
             argv[0] = argv[0].substring(1);
-            System.out.print(bang(argv));
+            out.print(bang(argv));
             return;
         }
 
@@ -601,24 +604,31 @@ public class REPL {
             disconnect();
         }
     }
+
+    private String readLine(String prompt) throws IOException {
+        if (console!=null) {
+            return console.readLine("%s", prompt);
+        } else {
+            prompt(prompt);
+            return input.readLine();
+        }
+    }
     
     private void run() {
-        BufferedReader i = null;
         try {
-            i = new BufferedReader(new InputStreamReader (System.in));
-            System.out.println("Command processor initialized");
+            prompt("Command processor initialized\n");
             while (!done) {
                 confused = false;
                 StringBuilder command = null;
-                prompt("[] ");
+                String prompt = "[] ";
                 for(;;) {
-                    String line = i.readLine();
+                    String line = readLine(prompt);
                     if (line==null) break;
                     if (command==null) command = new StringBuilder();
                     command.append(line);
                     if (line.endsWith("\\")) {
                         command.setLength(command.length()-1);
-                        prompt("<> ");
+                        prompt = "<> ";
                     } else {
                         break;
                     }
@@ -642,9 +652,9 @@ public class REPL {
             // quit
             error(e);
         } finally {
-            if (i != null) {
+            if (input != null) {
                 try {
-                    i.close();
+                    input.close();
                 } catch (Exception e) {
                     // oh well
                 }
@@ -654,5 +664,8 @@ public class REPL {
     }
     
     public REPL() {
+        if (console==null) {
+            input = new BufferedReader(new InputStreamReader (System.in));
+        }
     }
 }
