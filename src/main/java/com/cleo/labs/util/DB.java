@@ -447,7 +447,7 @@ public class DB {
         return insert(table, Arrays.asList(columns), Arrays.asList(args));
     }
 
-    private static final Pattern PGEXCEPTION = Pattern.compile("(?s).*ERROR: null value in column \"(\\w*)\" of relation \"(\\w*)\" violates not-null constraint.*");
+    private static final Pattern PGEXCEPTION = Pattern.compile("(?s).*ERROR: null value in column \"(\\w*)\" (?:of relation \"(\\w*)\" )?violates not-null constraint.*");
     public int insert(String table, List<String> columns, List<Object> args) throws SQLException {
         PreparedStatement stmt = null;
         try {
